@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project
+namespace Project.Enums
 {
-    internal class List
+    public enum Job
     {
+        Barman,
+        Cook,
+        Waiter
     }
 }
