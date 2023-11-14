@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Project
 {
-    internal interface IPerson
+    public abstract class IPerson
     {
-        string FirstName { get; set; }
-        string LastName { get; set; }
-        int Age { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int Age { get; set; }
     }
 }
