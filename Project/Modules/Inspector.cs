@@ -13,7 +13,7 @@ namespace Project
         {
             throw new NotImplementedException();
         }
-        public void PrintToDisplay()
+        public string PrintToDisplay()
         {
             throw new NotImplementedException();
         }

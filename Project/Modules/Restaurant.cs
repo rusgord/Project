@@ -9,7 +9,7 @@ namespace Project
     public class Restaurant
     {
         public string Name { get; set; }
-        public Restaurant(string name, Owner owner) 
+        public Restaurant(string name, Owner owner, List<Worker> workers) 
         {
             throw new NotImplementedException();
         }
