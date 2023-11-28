@@ -3,18 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Project
 {
-    public class Owner : IPerson
+    public class Owner : IPerson, ICloneable
     {
         public int Income { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public int Age { get; set; }
+        public override string FirstName { get; set; }
+        public override string LastName { get; set; }
+        public override int Age { get; set; }
         public Owner(string name, string surname, int age, int income)
         {
-            throw new NotImplementedException();
+            FirstName = name;
+            LastName = surname;
+            Age = age;
+            Income = income;
+        }
+        public object Clone()
+        {
+            return new Owner(FirstName, LastName, Age, Income);
         }
     }
 }

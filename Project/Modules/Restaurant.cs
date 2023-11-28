@@ -6,12 +6,32 @@ using System.Threading.Tasks;
 
 namespace Project
 {
-    public class Restaurant
+    public class Restaurant : IPrintable
     {
         public string Name { get; set; }
-        public Restaurant(string name, Owner owner, List<Worker> workers) 
+        public Owner Owner { get; set; }
+        public List<Worker> Workers { get; set; }
+        public Restaurant(string name)
         {
-            throw new NotImplementedException();
+            Name = name;
+        }
+        public Restaurant(string name, Owner owner, List<Worker> workers) : this(name)
+        {
+            Owner = owner;
+            Workers = workers;
+        }
+        public string OwnerToSyring()
+        {
+            return $"{Owner.FirstName} {Owner.LastName}";
+        }
+        public string PrintToDisplay() 
+        {
+            string result = $"Owner: {Owner.FirstName} {Owner.LastName}, age - {Owner.Age}\nIncome: {Owner.Income}\n\nWorkers - {Workers.Count}";
+            foreach (Worker worker in Workers) 
+            {
+                result += $"\nWorker {worker.Id}: {worker.FirstName} {worker.LastName}, age - {worker.Age}\nJob '{worker.Job}'";
+            }
+            return result += "\n";
         }
     }
 }

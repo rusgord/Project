@@ -8,7 +8,7 @@ namespace Project.Enums
 {
     public enum Job
     {
-        Barman,
+        Barman = 1,
         Cook,
         Waiter
     }

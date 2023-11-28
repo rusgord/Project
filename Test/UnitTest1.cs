@@ -16,7 +16,7 @@ namespace Test
             workers.Add(new Worker(3, "Sam", "Himel", 22, Job.Cook));
             Restaurant restaurant1 = new Restaurant("HillLime", owner, workers);
             Inspector inspector = new Inspector(restaurant1, 3);
-            string expected = $"restaurant: {restaurant1.Name}, Owner: {owner.FirstName} {owner.LastName}, Workers: {workers.Count}";
+            string expected = $"Restaurant: {restaurant1.Name}, Owner: {owner.FirstName} {owner.LastName}, Workers: {workers.Count}";
             string actual = inspector.PrintToDisplay();
             Assert.AreEqual(expected, actual);
         }
