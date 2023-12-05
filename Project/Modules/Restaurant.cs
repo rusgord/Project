@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Project
 {
@@ -20,7 +21,11 @@ namespace Project
             Owner = owner;
             Workers = workers;
         }
-        public string OwnerToSyring()
+        public void IsEmpty(string name)
+        {
+            if (string.IsNullOrEmpty(name)) throw new ArgumentException("Invalid Type");
+        }
+        public override string ToString()
         {
             return $"{Owner.FirstName} {Owner.LastName}";
         }
