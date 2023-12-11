@@ -12,7 +12,7 @@ namespace Project
             while (true)
             {
                 try { 
-                Console.WriteLine("1 - Rate the restaurant\n2 - Add a restaurant to the check list\n3 - Remove a restaurant from the check list\n4 - Change owner\n5 - Check list\n0 - Exit");
+                Console.WriteLine("1 - Rate the restaurant\n2 - Add a restaurant to the check list\n3 - Remove a restaurant from the check list\n4 - Change owner\n5 - Check list\n6 - Number of rated restaurants\n7 - Change jobs\n0 - Exit");
                 int choose = Convert.ToInt32(Console.ReadLine());
                 if (choose == 0) { break; }
                     switch (choose)
@@ -24,7 +24,7 @@ namespace Project
                             Console.WriteLine("Choose:\n");
                             foreach (Inspector rating in list)
                             {
-                                Console.WriteLine(++i + " " + rating.ToString() + "\n");
+                                Console.WriteLine(++i + " " + rating.ToStringDelegate.Invoke() + "\n");
                             }
                             i = Convert.ToInt32(Console.ReadLine());
                             if (i <= list.Count && list[i - 1].Rating != null)
@@ -33,8 +33,8 @@ namespace Project
                             choose = Convert.ToInt32(Console.ReadLine());
                             if (choose >= 0 && choose <= 10)
                             {
+                                list[i - 1].OnRatingChanged += RatingChangedHandler;
                                 list[i - 1].Rating = choose;
-                                Console.WriteLine("Rated");
                             }
                             break;
                         case 2:
@@ -114,7 +114,7 @@ namespace Project
                                 Console.WriteLine("Choose:\n");
                                 foreach (Inspector rating in list)
                                 {
-                                    Console.WriteLine(++i + " " + rating.ToString() + "\n");
+                                    Console.WriteLine(++i + " " + rating.ToStringDelegate.Invoke() + "\n");
                                 }
                                 i = Convert.ToInt32(Console.ReadLine());
                                 list.RemoveAt(i - 1);
@@ -132,7 +132,7 @@ namespace Project
                                     Console.WriteLine("Choose owner:\n");
                                     foreach (Inspector rating in list)
                                     {
-                                        Console.WriteLine(++i + " " + rating.ToString() + $"\n{rating.Restaurant.ToString()}\n");
+                                        Console.WriteLine(++i + " " + rating.ToStringDelegate.Invoke() + $"\n{rating.Restaurant.ToString()}\n");
                                     }
                                     i = Convert.ToInt32(Console.ReadLine());
                                     Owner copy = (Owner)list[i - 1].Restaurant.Owner.Clone();
@@ -142,7 +142,7 @@ namespace Project
                                     {
                                         sort++;
                                         if (sort != i)
-                                            Console.WriteLine(sort + " " + rating.ToString() + $"\n{rating.Restaurant.ToString()}\n");
+                                            Console.WriteLine(sort + " " + rating.ToStringDelegate.Invoke() + $"\n{rating.Restaurant.ToString()}\n");
                                     }
                                     sort = Convert.ToInt32(Console.ReadLine());
                                     if (sort != i)
@@ -163,6 +163,42 @@ namespace Project
                                 foreach (Inspector inspec in list)
                                     Console.WriteLine(inspec.PrintToDisplay());
                             break;
+                        case 6:
+                            if (list.Count == 0)
+                                throw new Exception("Empty check list!");
+                            int count = 0;
+                            Console.WriteLine($"Rated count: {Inspector.Action.Invoke(count, list)}");
+                            break;
+                        case 7:
+                            i = 0;
+                            if (list.Count == 0)
+                                throw new Exception("Empty check list!");
+
+                            Console.WriteLine("Choose restaurant:\n");
+                            foreach (Inspector rating in list)
+                            {
+                                Console.WriteLine(++i + " " + rating.ToStringDelegate.Invoke() + "\n");
+                            }
+
+                            i = Convert.ToInt32(Console.ReadLine());
+                            foreach (Worker personal in list[i - 1].Restaurant.Workers)
+                            {
+                                Console.WriteLine($"{personal.Id} - {personal.FirstName} {personal.LastName} {personal.Age}; Job: {personal.JobCheck}\n");
+                            }
+                            int work = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("Enter new job (Barmen, Cook, Waiter):");
+                            string newJob = Console.ReadLine();
+                            if (Enum.TryParse(newJob, out Job job))
+                            {
+                                list[i - 1].Restaurant.Workers[work - 1].OnJobChanged += JobChangedHandler;
+                                list[i - 1].Restaurant.Workers[work - 1].JobCheck = job;
+                                list[i - 1].Restaurant.Workers[work - 1].OnJobChanged -= JobChangedHandler;
+                            }
+                            else
+                            {
+                                throw new ArgumentException("Invalid Job Type!");
+                            }
+                            break;
                         default:
                             throw new Exception("Invalid Option!");
                     }
@@ -176,6 +212,14 @@ namespace Project
                     Console.WriteLine(ex.Message);
                 }
             }
+        }
+        static void RatingChangedHandler(object sender, EventArgs e)
+        {
+            Console.WriteLine("Rating has changed!");
+        }
+        static void JobChangedHandler(object sender, EventArgs e)
+        {
+            Console.WriteLine("Job has changed!");
         }
     }
 }

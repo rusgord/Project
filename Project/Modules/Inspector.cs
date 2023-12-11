@@ -8,24 +8,40 @@ namespace Project
 {
     public class Inspector : IPrintable
     {
-        public int? Rating { get; set; }
+        int? rating;
+        public int? Rating
+        {
+            get { return rating; }
+            set
+            {
+                rating = value;
+                OnRatingChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        public event EventHandler OnRatingChanged;
         public Restaurant Restaurant { get; set; }
         public Inspector(Restaurant restaurant, int? rating) 
         {
             Rating = rating;
             Restaurant = restaurant;
         }
-        public override string ToString()
+        public Func<string> ToStringDelegate => () =>
         {
-            string result;
             if (Rating == null)
             {
-                result = $"Restaurant: {Restaurant.Name} - not rated";
+                return $"Restaurant: {Restaurant.Name} - not rated";
             }
-            else 
-                result = $"Restaurant: {Restaurant.Name}, rating - {Rating}";
-            return result;
-        }
+            else
+                return $"Restaurant: {Restaurant.Name}, rating - {Rating}";
+        };
+        public static Func<int, List<Inspector>, int> Action = (count, list) =>
+        {
+            foreach (var item in list)
+            {
+                if (item.Rating != null) count++;
+            }
+            return count;
+        };
         public string PrintToDisplay()
         {
             string result;

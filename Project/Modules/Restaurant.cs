@@ -34,7 +34,7 @@ namespace Project
             string result = $"Owner: {Owner.FirstName} {Owner.LastName}, age - {Owner.Age}\nIncome: {Owner.Income}\n\nWorkers - {Workers.Count}";
             foreach (Worker worker in Workers) 
             {
-                result += $"\nWorker {worker.Id}: {worker.FirstName} {worker.LastName}, age - {worker.Age}\nJob '{worker.Job}'";
+                result += $"\nWorker {worker.Id}: {worker.FirstName} {worker.LastName}, age - {worker.Age}\nJob '{worker.JobCheck}'";
             }
             return result += "\n";
         }

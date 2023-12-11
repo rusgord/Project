@@ -8,24 +8,35 @@ using System.Threading.Tasks;
 
 namespace Project
 {
-    public class Worker : IPerson, ITest
+    public delegate void JobChangedHandlerDelegate(object sender, EventArgs e);
+    public class Worker : Person, ITest
     {
+        public event JobChangedHandlerDelegate OnJobChanged;
         public int Id { get; set; }
         public override string FirstName { get; set; }
         public override string LastName { get; set; }
         public override int Age { get; set; }
-        public Job Job { get; set; }
+        private Job Job;
+        public Job JobCheck
+        {
+            get { return Job; }
+            set
+            {
+                Job = value;
+                OnJobChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
         public Worker(int id, string name, string surname, int age, Job job)
         {
             Id = id;
             FirstName = name;
             LastName = surname;
             Age = age;
-            Job = job;
+            JobCheck = job;
         }
         public void IsEmpty(string text)
         {
-            if (string.IsNullOrEmpty(text) || text == " " || text == "") throw new ArgumentException("Invalid Type");
+            if (string.IsNullOrEmpty(text)) throw new ArgumentException("Invalid Type");
         }
         public void NormalAge(int age)
         {
